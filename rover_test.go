@@ -83,3 +83,21 @@ func TestLeft(t *testing.T) {
 	r.Command("L")
 	assert.Equal(t, Rover{x: 10, y: 10, d: North}, r)
 }
+
+// Rotate Right
+
+func TestRight(t *testing.T) {
+	r := Rover{x: 10, y: 10, d: North}
+
+	r.Command("R")
+	assert.Equal(t, Rover{x: 10, y: 10, d: East}, r)
+
+	r.Command("R")
+	assert.Equal(t, Rover{x: 10, y: 10, d: South}, r)
+
+	r.Command("R")
+	assert.Equal(t, Rover{x: 10, y: 10, d: West}, r)
+
+	r.Command("R")
+	assert.Equal(t, Rover{x: 10, y: 10, d: North}, r)
+}
