@@ -41,6 +41,8 @@ func (r *Rover) Command(cs string) {
 			r.backward()
 		case left:
 			r.left()
+		case right:
+			r.right()
 		}
 	}
 }
@@ -73,4 +75,8 @@ func (r *Rover) backward() {
 
 func (r *Rover) left() {
 	r.d = (r.d + cardinalDirections - 1) % cardinalDirections
+}
+
+func (r *Rover) right() {
+	r.d = (r.d + 1) % cardinalDirections
 }
