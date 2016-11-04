@@ -35,6 +35,8 @@ func (r *Rover) Move(cs string) {
 		switch c {
 		case forward:
 			r.forward()
+		case backward:
+			r.backward()
 		}
 	}
 }
@@ -49,5 +51,18 @@ func (r *Rover) forward() {
 		r.y = (r.y + GridSize - 1) % GridSize
 	case West:
 		r.x = (r.x + GridSize - 1) % GridSize
+	}
+}
+
+func (r *Rover) backward() {
+	switch r.d {
+	case North:
+		r.y = (r.y + GridSize - 1) % GridSize
+	case East:
+		r.x = (r.x + GridSize - 1) % GridSize
+	case South:
+		r.y = (r.y + 1) % GridSize
+	case West:
+		r.x = (r.x + 1) % GridSize
 	}
 }
