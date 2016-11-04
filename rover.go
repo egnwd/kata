@@ -31,6 +31,10 @@ type Rover struct {
 	d int
 }
 
+const maxObstacles = 50
+
+var pluto = make(map[int]bool, maxObstacles)
+
 // Command takes in a set of commands for the rover to perform
 func (r *Rover) Command(cs string) {
 	for _, c := range cs {
