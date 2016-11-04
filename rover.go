@@ -1,5 +1,10 @@
 package rover
 
+import (
+	"fmt"
+	"math/rand"
+)
+
 const (
 	// North is a compass point
 	North = iota
@@ -35,19 +40,39 @@ const maxObstacles = 50
 
 var pluto = make(map[int]bool, maxObstacles)
 
+func init() {
+	for i := 0; i < maxObstacles; i++ {
+		x := rand.Intn(GridSize)
+		y := rand.Intn(GridSize)
+		h := hashCoordinate(x, y)
+		pluto[h] = true
+	}
+}
+
 // Command takes in a set of commands for the rover to perform
 func (r *Rover) Command(cs string) {
 	for _, c := range cs {
 		switch c {
-		case forward:
-			r.forward()
-		case backward:
-			r.backward()
+		case forward, backward:
+			if r.detectObstacle(c == forward) {
+				fmt.Println("Danger: Obstacle Ahead")
+				return
+			}
+			r.move(c)
 		case left:
 			r.left()
 		case right:
 			r.right()
 		}
+	}
+}
+
+func (r *Rover) move(c rune) {
+	switch c {
+	case forward:
+		r.forward()
+	case backward:
+		r.backward()
 	}
 }
 
@@ -83,4 +108,22 @@ func (r *Rover) left() {
 
 func (r *Rover) right() {
 	r.d = (r.d + 1) % cardinalDirections
+}
+
+func (r *Rover) detectObstacle(isForward bool) bool {
+	ghost := *r
+	if isForward {
+		ghost.forward()
+	} else {
+		ghost.backward()
+	}
+
+	h := hashCoordinate(ghost.x, ghost.y)
+
+	return pluto[h]
+}
+
+func hashCoordinate(x, y int) int {
+	// This is the cantor pairing function
+	return int(0.5*float64((x+y)*(x+y+1))) + y
 }
