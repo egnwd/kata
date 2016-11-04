@@ -9,6 +9,8 @@ const (
 	South
 	// West is a compass point
 	West
+
+	cardinalDirections = 4
 )
 
 // Action constants
@@ -29,14 +31,16 @@ type Rover struct {
 	d int
 }
 
-// Move takes in a set of commands for the rover to perform
-func (r *Rover) Move(cs string) {
+// Command takes in a set of commands for the rover to perform
+func (r *Rover) Command(cs string) {
 	for _, c := range cs {
 		switch c {
 		case forward:
 			r.forward()
 		case backward:
 			r.backward()
+		case left:
+			r.left()
 		}
 	}
 }
@@ -65,4 +69,8 @@ func (r *Rover) backward() {
 	case West:
 		r.x = (r.x + 1) % GridSize
 	}
+}
+
+func (r *Rover) left() {
+	r.d = (r.d + cardinalDirections - 1) % cardinalDirections
 }
