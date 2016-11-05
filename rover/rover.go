@@ -37,7 +37,7 @@ type Rover struct {
 	D int
 }
 
-const maxObstacles = 50
+const maxObstacles = 1000
 
 var pluto = make(map[int]bool, maxObstacles)
 

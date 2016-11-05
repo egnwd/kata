@@ -9,7 +9,7 @@ import (
 
 func main() {
 	r := kata.Rover{X: 0, Y: 0, D: kata.North}
-
+	fmt.Println(&r)
 	r.Command(os.Args[1])
 	fmt.Println(&r)
 }
