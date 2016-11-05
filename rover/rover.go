@@ -14,9 +14,10 @@ const (
 	South
 	// West is a compass point
 	West
-
-	cardinalDirections = 4
+	cardinalDirections
 )
+
+var compassPoints = []string{"North", "East", "South", "West"}
 
 // Action constants
 const (
@@ -31,9 +32,9 @@ const GridSize = 100
 
 // Rover represents the state of a Kata rover
 type Rover struct {
-	x int
-	y int
-	d int
+	X int
+	Y int
+	D int
 }
 
 const maxObstacles = 50
@@ -77,37 +78,37 @@ func (r *Rover) move(c rune) {
 }
 
 func (r *Rover) forward() {
-	switch r.d {
+	switch r.D {
 	case North:
-		r.y = (r.y + 1) % GridSize
+		r.Y = (r.Y + 1) % GridSize
 	case East:
-		r.x = (r.x + 1) % GridSize
+		r.X = (r.X + 1) % GridSize
 	case South:
-		r.y = (r.y + GridSize - 1) % GridSize
+		r.Y = (r.Y + GridSize - 1) % GridSize
 	case West:
-		r.x = (r.x + GridSize - 1) % GridSize
+		r.X = (r.X + GridSize - 1) % GridSize
 	}
 }
 
 func (r *Rover) backward() {
-	switch r.d {
+	switch r.D {
 	case North:
-		r.y = (r.y + GridSize - 1) % GridSize
+		r.Y = (r.Y + GridSize - 1) % GridSize
 	case East:
-		r.x = (r.x + GridSize - 1) % GridSize
+		r.X = (r.X + GridSize - 1) % GridSize
 	case South:
-		r.y = (r.y + 1) % GridSize
+		r.Y = (r.Y + 1) % GridSize
 	case West:
-		r.x = (r.x + 1) % GridSize
+		r.X = (r.X + 1) % GridSize
 	}
 }
 
 func (r *Rover) left() {
-	r.d = (r.d + cardinalDirections - 1) % cardinalDirections
+	r.D = (r.D + cardinalDirections - 1) % cardinalDirections
 }
 
 func (r *Rover) right() {
-	r.d = (r.d + 1) % cardinalDirections
+	r.D = (r.D + 1) % cardinalDirections
 }
 
 func (r *Rover) detectObstacle(isForward bool) bool {
@@ -118,9 +119,13 @@ func (r *Rover) detectObstacle(isForward bool) bool {
 		ghost.backward()
 	}
 
-	h := hashCoordinate(ghost.x, ghost.y)
+	h := hashCoordinate(ghost.X, ghost.Y)
 
 	return pluto[h]
+}
+
+func (r *Rover) String() string {
+	return fmt.Sprintf("Rover: (%d, %d), facing %s", r.X, r.Y, compassPoints[r.D])
 }
 
 func hashCoordinate(x, y int) int {
